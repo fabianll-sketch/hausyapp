@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOUSY — Tu hogar, tu inspiración</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F0F2F7;
+    --warm-white: #F7F8FC;
+    --navy: #0D1B2E;
+    --navy-mid: #162438;
+    --navy-light: #1E3352;
+    --champagne: #C9A96E;
+    --champagne-light: #E8D5A8;
+    --stone: #6B7A8F;
+    --light-stone: #D8DEE9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--cream); color: var(--navy); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 48px;
+    background: rgba(13,27,46,0.93);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(201,169,110,0.18);
+  }
+  .logo { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; letter-spacing: 0.28em; color: white; cursor: pointer; }
+  .logo span { color: var(--champagne); }
+  .nav-links { display: flex; gap: 32px; list-style: none; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .nav-links a { color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.3s; cursor: pointer; }
+  .nav-links a:hover { color: var(--champagne); }
+  .nav-cta {
+    background: var(--champagne); color: var(--navy);
+    border: none; padding: 10px 26px;
+    font-family: 'DM Sans', sans-serif; font-size: 12px;
+    letter-spacing: 0.08em; font-weight: 600;
+    cursor: pointer; transition: background 0.3s; border-radius: 2px;
+  }
+  .nav-cta:hover { background: var(--champagne-light); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+    padding-top: 80px; overflow: hidden; background: var(--navy);
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 80px 56px 80px 80px;
+  }
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--champagne); margin-bottom: 26px; font-weight: 500;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before { content: ''; display: block; width: 30px; height: 1px; background: var(--champagne); }
+  h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(48px, 5.2vw, 76px); font-weight: 300; line-height: 1.06; color: white; margin-bottom: 26px; }
+  h1 em { font-style: italic; color: var(--champagne); }
+  .hero-desc { font-size: 15px; line-height: 1.8; color: rgba(255,255,255,0.5); max-width: 420px; margin-bottom: 44px; font-weight: 300; }
+
+  /* Waitlist form */
+  .waitlist-form { width: 100%; max-width: 460px; }
+  .waitlist-label { display: block; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 14px; }
+  .waitlist-row { display: flex; border: 1px solid rgba(201,169,110,0.45); border-radius: 2px; overflow: hidden; }
+  .waitlist-input { flex: 1; background: rgba(255,255,255,0.06); border: none; padding: 15px 18px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: white; outline: none; min-width: 0; }
+  .waitlist-input::placeholder { color: rgba(255,255,255,0.28); }
+  .waitlist-input:focus { background: rgba(255,255,255,0.1); }
+  .waitlist-input.error { border-left: 2px solid #e05577; }
+  .btn-waitlist { background: var(--champagne); color: var(--navy); border: none; padding: 15px 24px; font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: 0.08em; font-weight: 700; cursor: pointer; transition: background 0.3s; white-space: nowrap; }
+  .btn-waitlist:hover { background: var(--champagne-light); }
+  .waitlist-success { display: none; color: var(--champagne); font-size: 13px; margin-top: 12px; }
+  .waitlist-note { font-size: 11px; color: rgba(255,255,255,0.28); margin-top: 9px; }
+
+  .hero-stats { display: flex; gap: 40px; margin-top: 56px; padding-top: 36px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 300; color: var(--champagne); display: block; }
+  .stat-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-top: 4px; }
+
+  /* Hero right phone */
+  .hero-right {
+    position: relative; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #162438 0%, #0D1B2E 100%); overflow: hidden;
+  }
+  .hero-right::before {
+    content: ''; position: absolute; width: 480px; height: 480px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,169,110,0.1) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+  }
+  .phone-frame {
+    width: 272px; height: 565px; background: var(--navy); border-radius: 38px; padding: 11px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.55), 0 0 0 1px rgba(201,169,110,0.18);
+    position: relative; z-index: 2; animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-14px) rotate(-2deg); } }
+  .phone-screen { width: 100%; height: 100%; background: var(--warm-white); border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; }
+  .phone-header { padding: 14px 14px 8px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--light-stone); background: white; }
+  .phone-logo { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 300; letter-spacing: 0.22em; color: var(--navy); }
+  .phone-logo span { color: var(--champagne); }
+  .phone-icons { display: flex; gap: 8px; }
+  .phone-icon { width: 14px; height: 14px; background: var(--light-stone); border-radius: 50%; }
+  .phone-feed { flex: 1; display: flex; flex-direction: column; gap: 2px; overflow: hidden; }
+  .feed-item { flex: 1; position: relative; overflow: hidden; }
+  .fi-1 { background: linear-gradient(135deg, #1E3352, #0D1B2E); }
+  .fi-2 { background: linear-gradient(135deg, #2A4A6B, #162438); }
+  .fi-3 { background: linear-gradient(135deg, #C9A96E, #8A6A30); }
+  .feed-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 10px 12px; background: linear-gradient(transparent, rgba(13,27,46,0.75)); color: white; font-size: 10px; }
+  .feed-user { font-weight: 500; font-size: 9px; letter-spacing: 0.04em; opacity: 0.9; }
+  .feed-tag { display: inline-block; background: rgba(201,169,110,0.9); color: var(--navy); font-size: 7px; padding: 2px 6px; border-radius: 2px; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; font-weight: 700; }
+
+  .float-card { position: absolute; background: var(--navy-light); border: 1px solid rgba(201,169,110,0.22); border-radius: 10px; padding: 11px 15px; box-shadow: 0 12px 36px rgba(0,0,0,0.32); z-index: 3; animation: floatCard 5s ease-in-out infinite; }
+  .float-card-1 { left: -28px; top: 30%; animation-delay: 0.5s; }
+  .float-card-2 { right: -18px; bottom: 28%; animation-delay: 1.5s; }
+  @keyframes floatCard { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .card-label { font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.38); }
+  .card-val { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 300; color: white; margin-top: 2px; }
+  .card-sub { font-size: 8px; color: var(--champagne); margin-top: 2px; }
+
+  /* ── AUDIENCE ── */
+  .audience { padding: 120px 80px; background: var(--warm-white); }
+  .section-header { text-align: center; max-width: 580px; margin: 0 auto 72px; }
+  .section-eyebrow { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--champagne); margin-bottom: 18px; font-weight: 500; }
+  h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 4vw, 54px); font-weight: 300; line-height: 1.12; color: var(--navy); }
+  h2 em { font-style: italic; color: var(--champagne); }
+  .section-desc { margin-top: 18px; font-size: 15px; line-height: 1.78; color: var(--stone); font-weight: 300; }
+  .audience-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 22px; max-width: 1200px; margin: 0 auto; }
+  .audience-card { background: white; border: 1px solid var(--light-stone); padding: 38px 30px; border-radius: 4px; transition: all 0.4s; position: relative; overflow: hidden; }
+  .audience-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--champagne), var(--champagne-light)); transform: scaleX(0); transition: transform 0.4s; transform-origin: left; }
+  .audience-card:hover { transform: translateY(-6px); box-shadow: 0 20px 56px rgba(13,27,46,0.1); }
+  .audience-card:hover::after { transform: scaleX(1); }
+  .audience-icon { width: 44px; height: 44px; margin-bottom: 22px; }
+  .audience-icon svg { width: 100%; height: 100%; }
+  .audience-title { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 400; color: var(--navy); margin-bottom: 10px; }
+  .audience-desc { font-size: 13px; line-height: 1.72; color: var(--stone); font-weight: 300; }
+
+  /* ── FEATURES ── */
+  .features { padding: 120px 80px; background: var(--navy); }
+  .features .section-eyebrow { color: var(--champagne); }
+  .features h2 { color: white; }
+  .features .section-desc { color: rgba(255,255,255,0.45); }
+  .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; max-width: 1080px; margin: 0 auto; }
+  .feature-block { padding: 56px; border: 1px solid rgba(255,255,255,0.055); transition: background 0.4s; position: relative; }
+  .feature-block:hover { background: rgba(201,169,110,0.04); }
+  .feature-num { font-family: 'Cormorant Garamond', serif; font-size: 68px; font-weight: 300; color: rgba(255,255,255,0.04); position: absolute; top: 18px; right: 26px; line-height: 1; pointer-events: none; }
+  .feature-icon-wrap { width: 42px; height: 42px; border: 1px solid rgba(201,169,110,0.38); border-radius: 7px; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; }
+  .feature-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; color: white; margin-bottom: 12px; }
+  .feature-desc { font-size: 13px; line-height: 1.78; color: rgba(255,255,255,0.38); font-weight: 300; }
+
+  /* ── GALLERY ── */
+  .gallery { padding: 110px 0; background: var(--navy-mid); overflow: hidden; }
+  .gallery .section-header { padding: 0 80px; margin-bottom: 56px; }
+  .gallery h2 { color: white; }
+  .gallery-strip { display: flex; gap: 14px; padding: 0 80px; animation: scrollStrip 28s linear infinite; width: max-content; }
+  .gallery-strip:hover { animation-play-state: paused; }
+  @keyframes scrollStrip { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .gallery-item { flex: 0 0 272px; height: 348px; border-radius: 4px; overflow: hidden; position: relative; }
+  .gi-1 { background: linear-gradient(160deg,#1E3352,#0D1B2E); }
+  .gi-2 { background: linear-gradient(160deg,#2A4A6B,#162438); }
+  .gi-3 { background: linear-gradient(160deg,#C9A96E,#7A5E2A); }
+  .gi-4 { background: linear-gradient(160deg,#162438,#0A1220); }
+  .gi-5 { background: linear-gradient(160deg,#3A5A7A,#1E3352); }
+  .gi-6 { background: linear-gradient(160deg,#4A6A8A,#2A4060); }
+  .gi-7 { background: linear-gradient(160deg,#B8924A,#7A5E28); }
+  .gi-8 { background: linear-gradient(160deg,#0D1B2E,#060E1A); }
+  .gallery-item-inner { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 18px; background: linear-gradient(transparent 40%,rgba(13,27,46,0.72)); }
+  .gallery-item-tag { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--champagne); margin-bottom: 5px; }
+  .gallery-item-title { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 300; color: white; }
+
+  /* ── CTA ── */
+  .cta { padding: 150px 80px; background: linear-gradient(135deg, var(--navy-light), var(--navy)); text-align: center; position: relative; overflow: hidden; border-top: 1px solid rgba(201,169,110,0.12); }
+  .cta::before { content: 'HOUSY'; position: absolute; font-family: 'Cormorant Garamond', serif; font-size: 280px; font-weight: 300; color: rgba(201,169,110,0.04); letter-spacing: 0.2em; top: 50%; left: 50%; transform: translate(-50%,-50%); white-space: nowrap; pointer-events: none; }
+  .cta h2 { color: white; margin-bottom: 20px; }
+  .cta .section-eyebrow { color: var(--champagne); }
+  .cta .section-desc { color: rgba(255,255,255,0.5); max-width: 500px; margin: 0 auto 44px; }
+  .cta-waitlist { max-width: 480px; margin: 0 auto; position: relative; z-index: 1; }
+
+  /* ── FOOTER ── */
+  footer { background: #060E1A; padding: 52px 80px 36px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(201,169,110,0.1); flex-wrap: wrap; gap: 20px; }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; letter-spacing: 0.26em; color: white; }
+  .footer-logo span { color: var(--champagne); }
+  .footer-links { display: flex; gap: 26px; flex-wrap: wrap; }
+  .footer-links a { color: rgba(255,255,255,0.28); font-size: 11px; letter-spacing: 0.1em; text-decoration: none; transition: color 0.3s; text-transform: uppercase; cursor: pointer; }
+  .footer-links a:hover { color: var(--champagne); }
+  .footer-copy { color: rgba(255,255,255,0.14); font-size: 11px; }
+
+  /* ── INNER PAGES ── */
+  .inner-page { display: none; position: fixed; inset: 0; background: var(--navy); z-index: 300; overflow-y: auto; }
+  .inner-page.active { display: block; }
+  .inner-topbar { position: sticky; top: 0; background: rgba(13,27,46,0.96); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(201,169,110,0.14); padding: 18px 48px; display: flex; align-items: center; justify-content: space-between; z-index: 10; }
+  .inner-logo { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 300; letter-spacing: 0.26em; color: white; }
+  .inner-logo span { color: var(--champagne); }
+  .inner-back { display: flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.45); font-size: 12px; cursor: pointer; transition: color 0.3s; background: none; border: none; font-family: 'DM Sans', sans-serif; letter-spacing: 0.06em; }
+  .inner-back:hover { color: var(--champagne); }
+  .inner-content { max-width: 740px; margin: 0 auto; padding: 72px 48px 100px; }
+  .inner-eyebrow { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--champagne); margin-bottom: 14px; }
+  .inner-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(30px,4vw,50px); font-weight: 300; color: white; line-height: 1.1; margin-bottom: 10px; }
+  .inner-date { font-size: 11px; color: rgba(255,255,255,0.26); letter-spacing: 0.08em; padding-bottom: 36px; margin-bottom: 36px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .inner-content h3 { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 400; color: white; margin: 44px 0 14px; }
+  .inner-content h4 { font-size: 11px; font-weight: 600; color: var(--champagne); letter-spacing: 0.14em; text-transform: uppercase; margin: 24px 0 8px; }
+  .inner-content p { font-size: 14px; line-height: 1.88; color: rgba(255,255,255,0.55); margin-bottom: 14px; font-weight: 300; }
+  .inner-content ul { padding-left: 18px; margin-bottom: 14px; }
+  .inner-content li { font-size: 14px; line-height: 1.88; color: rgba(255,255,255,0.55); margin-bottom: 7px; font-weight: 300; }
+  .inner-divider { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 40px 0; }
+  .press-data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .press-data-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 3px; padding: 20px 22px; }
+  .press-data-item .label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--champagne); margin-bottom: 6px; }
+  .press-data-item .value { font-size: 14px; color: rgba(255,255,255,0.7); font-weight: 300; }
+
+  /* ── ANIMATIONS ── */
+  .hero-left > * { opacity: 0; transform: translateY(24px); animation: fadeUp 0.8s ease forwards; }
+  .hero-left > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero-left > *:nth-child(2) { animation-delay: 0.22s; }
+  .hero-left > *:nth-child(3) { animation-delay: 0.34s; }
+  .hero-left > *:nth-child(4) { animation-delay: 0.46s; }
+  .hero-left > *:nth-child(5) { animation-delay: 0.58s; }
+  .hero-right { opacity: 0; animation: fadeUp 0.8s ease 0.3s both; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 18px 22px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 96px 28px 56px; }
+    .hero-right { height: 460px; }
+    .audience-grid { grid-template-columns: 1fr 1fr; }
+    .features-grid { grid-template-columns: 1fr; }
+    .audience, .features, .cta { padding: 80px 28px; }
+    .gallery .section-header { padding: 0 28px; }
+    .gallery-strip { padding: 0 28px; }
+    footer { padding: 36px 28px; }
+    .waitlist-row { flex-direction: column; }
+    .inner-topbar { padding: 16px 22px; }
+    .inner-content { padding: 56px 22px 80px; }
+    .press-data-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="logo" onclick="hidePage(); window.scrollTo({top:0,behavior:'smooth'})">HOU<span>S</span>Y</div>
+  <ul class="nav-links">
+    <li><a onclick="hidePage(); window.scrollTo({top:0,behavior:'smooth'})">Home</a></li>
+    <li><a href="#para-ti">Para ti</a></li>
+    <li><a href="#funciones">Funciones</a></li>
+    <li><a href="#galeria">Galería</a></li>
+    <li><a href="#comunidad">Comunidad</a></li>
+    <li><a id="nav-contact-link">Contacto</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('email-hero').focus(); document.querySelector('.hero').scrollIntoView({behavior:'smooth'})">Únete a la lista</button>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">La red social del hogar</p>
+    <h1>Donde cada hogar<br>cuenta su <em>historia</em></h1>
+    <p class="hero-desc">HOUSY es la plataforma donde arquitectos, diseñadores de interiores, ilustradores, corredores y amantes del hogar se encuentran para inspirar, compartir y descubrir el mundo inmobiliario.</p>
+
+    <div class="waitlist-form">
+      <span class="waitlist-label">Sé el primero en saber cuándo lanzamos</span>
+      <form name="waitlist" netlify id="form-hero">
+        <div class="waitlist-row" id="wrow-hero">
+          <input type="email" name="email" id="email-hero" class="waitlist-input" placeholder="tu@correo.com" required />
+          <button type="submit" class="btn-waitlist">Únete a la lista</button>
+        </div>
+        <p class="waitlist-success" id="success-hero"></p>
+      </form>
+      <p class="waitlist-note">Sin spam. Solo te escribimos cuando HOUSY esté listo.</p>
+    </div>
+  </div>
+
+  <div
+
+  <div class="hero-right">
+    <div class="phone-frame">
+      <div class="phone-screen">
+        <div class="phone-header">
+          <span class="phone-logo">HOU<span>S</span>Y</span>
+          <div class="phone-icons"><div class="phone-icon"></div><div class="phone-icon"></div></div>
+        </div>
+        <div class="phone-feed">
+          <div class="feed-item fi-1">
+            <div class="feed-overlay">
+              <div class="feed-user">@carolina.arq</div>
+              <div class="feed-tag">Arquitectura</div>
+            </div>
+          </div>
+          <div class="feed-item fi-2">
+            <div class="feed-overlay">
+              <div class="feed-user">@nido.diseno</div>
+              <div class="feed-tag">Diseño Interior</div>
+            </div>
+          </div>
+          <div class="feed-item fi-3">
+            <div class="feed-overlay">
+              <div class="feed-user">@casas.premium</div>
+              <div class="feed-tag">En Venta</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="float-card float-card-1">
+      <div class="card-label">Propiedad del día</div>
+      <div class="card-val">$285M</div>
+      <div class="card-sub">↑ 3 nuevas consultas</div>
+    </div>
+    <div class="float-card float-card-2">
+      <div class="card-label">Tu perfil</div>
+      <div class="card-val">4.2K</div>
+      <div class="card-sub">seguidores esta semana</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ AUDIENCE ══ -->
+<section class="audience" id="para-ti">
+  <div class="section-header">
+    <p class="section-eyebrow">Hecho para ti</p>
+    <h2>Una comunidad para cada <em>apasionado</em> del espacio</h2>
+    <p class="section-desc">Desde el profesional que diseña hasta el soñador que busca su hogar ideal. HOUSY tiene un lugar para todos.</p>
+  </div>
+  <div class="audience-grid">
+    <div class="audience-card">
+      <div class="audience-icon">
+        <svg viewBox="0 0 48 48" fill="none"><path d="M8 36L24 12L40 36H8Z" stroke="#1E3352" stroke-width="1.5" stroke-linejoin="round"/><path d="M18 36V26H30V36" stroke="#C9A96E" stroke-width="1.5"/><path d="M8 36H40" stroke="#1E3352" stroke-width="1.5"/></svg>
+      </div>
+      <div class="audience-title">Arquitectos</div>
+      <p class="audience-desc">Muestra tus proyectos, conecta con clientes potenciales y posiciona tu firma arquitectónica en la comunidad que más importa.</p>
+    </div>
+    <div class="audience-card">
+      <div class="audience-icon">
+        <svg viewBox="0 0 48 48" fill="none"><rect x="8" y="12" width="32" height="24" rx="1" stroke="#1E3352" stroke-width="1.5"/><path d="M16 24H32" stroke="#C9A96E" stroke-width="1.5"/><path d="M24 16V32" stroke="#C9A96E" stroke-width="1.5"/><circle cx="20" cy="20" r="2" fill="#C9A96E"/><circle cx="28" cy="28" r="2" fill="#C9A96E"/></svg>
+      </div>
+      <div class="audience-title">Diseñadores de Interiores</div>
+      <p class="audience-desc">Crea tu portafolio visual, inspira a miles y encuentra proyectos de decoración desde tu perfil profesional.</p>
+    </div>
+    <div class="audience-card">
+      <div class="audience-icon">
+        <svg viewBox="0 0 48 48" fill="none"><path d="M12 36V20L24 12L36 20V36" stroke="#1E3352" stroke-width="1.5" stroke-linejoin="round"/><rect x="20" y="26" width="8" height="10" stroke="#1E3352" stroke-width="1.5"/><circle cx="36" cy="12" r="5" stroke="#C9A96E" stroke-width="1.5"/><path d="M36 9V15M33 12H39" stroke="#C9A96E" stroke-width="1.5"/></svg>
+      </div>
+      <div class="audience-title">Corredores de Propiedades</div>
+      <p class="audience-desc">Publica tus propiedades con estilo, genera prospectos calificados y construye tu reputación como el corredor de confianza.</p>
+    </div>
+    <div class="audience-card">
+      <div class="audience-icon">
+        <svg viewBox="0 0 48 48" fill="none"><path d="M24 38C24 38 10 28 10 19C10 14 14.5 10 19 10C21.5 10 23.5 11.5 24 12C24.5 11.5 26.5 10 29 10C33.5 10 38 14 38 19C38 28 24 38 24 38Z" stroke="#C9A96E" stroke-width="1.5"/></svg>
+      </div>
+      <div class="audience-title">Amantes del Hogar</div>
+      <p class="audience-desc">Guarda tu inspiración, sigue a los mejores profesionales y descubre propiedades que hacen soñar. Tu próximo hogar comienza aquí.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FEATURES ══ -->
+<section class="features" id="funciones">
+  <div class="section-header" style="margin-bottom:66px">
+    <p class="section-eyebrow">Funciones</p>
+    <h2>Todo lo que necesitas,<br><em>en tu nuevo Housy</em></h2>
+    <p class="section-desc">Diseñado desde cero para el mundo inmobiliario. No es Instagram con propiedades — es algo completamente Housy.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-block">
+      <div class="feature-num">01</div>
+      <div class="feature-icon-wrap"><svg width="19" height="19" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" stroke="#C9A96E" stroke-width="1.2"/><rect x="11" y="2" width="7" height="7" stroke="#C9A96E" stroke-width="1.2"/><rect x="2" y="11" width="7" height="7" stroke="#C9A96E" stroke-width="1.2"/><rect x="11" y="11" width="7" height="7" stroke="#C9A96E" stroke-width="1.2"/></svg></div>
+      <div class="feature-title">Feed Inmobiliario</div>
+      <p class="feature-desc">Descubre propiedades, proyectos y espacios curados según tus gustos. Algoritmo entrenado exclusivamente para el mundo del hogar.</p>
+    </div>
+    <div class="feature-block">
+      <div class="feature-num">02</div>
+      <div class="feature-icon-wrap"><svg width="19" height="19" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="8" r="4" stroke="#C9A96E" stroke-width="1.2"/><path d="M3 18C3 14.686 6.134 12 10 12C13.866 12 17 14.686 17 18" stroke="#C9A96E" stroke-width="1.2"/></svg></div>
+      <div class="feature-title">Perfil Profesional</div>
+      <p class="feature-desc">Portafolio visual completo con tus proyectos, certificaciones y reseñas de clientes. Tu vitrina digital más potente.</p>
+    </div>
+    <div class="feature-block">
+      <div class="feature-num">03</div>
+      <div class="feature-icon-wrap"><svg width="19" height="19" viewBox="0 0 20 20" fill="none"><path d="M10 2L12.5 7.5L18 8.27L14 12.14L15 18L10 15.27L5 18L6 12.14L2 8.27L7.5 7.5L10 2Z" stroke="#C9A96E" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
+      <div class="feature-title">Propiedades Premium</div>
+      <p class="feature-desc">Publica y explora propiedades con fichas detalladas, galería de fotos profesional, tour virtual y toda la información que un comprador necesita.</p>
+    </div>
+    <div class="feature-block">
+      <div class="feature-num">04</div>
+      <div class="feature-icon-wrap"><svg width="19" height="19" viewBox="0 0 20 20" fill="none"><path d="M3 5H17M3 10H17M3 15H11" stroke="#C9A96E" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      <div class="feature-title">Colecciones & Tableros</div>
+      <p class="feature-desc">Organiza tu inspiración en tableros temáticos. Comparte con clientes o mantenlos privados. Colabora con tu equipo en tiempo real.</p>
+    </div>
+    <div class="feature-block">
+      <div class="feature-num">05</div>
+      <div class="feature-icon-wrap"><svg width="19" height="19" viewBox="0 0 20 20" fill="none"><path d="M18 13C18 13.53 17.79 14.04 17.41 14.41C17.04 14.79 16.53 15 16 15H5L2 18V4C2 3.47 2.21 2.96 2.59 2.59C2.96 2.21 3.47 2 4 2H16C16.53 2 17.04 2.21 17.41 2.59C17.79 2.96 18 3.47 18 4V13Z" stroke="#C9A96E" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
+      <div class="feature-title">Mensajería Directa</div>
+      <p class="feature-desc">Conecta directamente con corredores, arquitectos o propietarios. Agenda visitas y negocia todo dentro de la plataforma.</p>
+    </div>
+    <div class="feature-block">
+      <div class="feature-num">06</div>
+      <div class="feature-icon-wrap"><svg width="19" height="19" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="#C9A96E" stroke-width="1.2"/><path d="M10 6V10L13 13" stroke="#C9A96E" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      <div class="feature-title">Trends & Mercado</div>
+      <p class="feature-desc">Reportes en tiempo real sobre tendencias de diseño, precios por zona y lo que está moviendo el mercado inmobiliario en tu ciudad.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ GALLERY ══ -->
+<section class="gallery" id="galeria">
+  <div class="section-header">
+    <p class="section-eyebrow">Galería</p>
+    <h2>Un universo de <em>espacios</em><br>te espera</h2>
+  </div>
+  <div class="gallery-strip">
+    <div class="gallery-item gi-1"><div class="gallery-item-inner"><div class="gallery-item-tag">Arquitectura Moderna</div><div class="gallery-item-title">Casa Piedra Blanca</div></div></div>
+    <div class="gallery-item gi-2"><div class="gallery-item-inner"><div class="gallery-item-tag">Diseño Interior</div><div class="gallery-item-title">Estudio Botánico</div></div></div>
+    <div class="gallery-item gi-3"><div class="gallery-item-inner"><div class="gallery-item-tag">En Venta · Santiago</div><div class="gallery-item-title">Penthouse Vista</div></div></div>
+    <div class="gallery-item gi-4"><div class="gallery-item-inner"><div class="gallery-item-tag">Ilustración</div><div class="gallery-item-title">Render Atardecer</div></div></div>
+    <div class="gallery-item gi-5"><div class="gallery-item-inner"><div class="gallery-item-tag">En Arriendo</div><div class="gallery-item-title">Loft Barrio Italia</div></div></div>
+    <div class="gallery-item gi-6"><div class="gallery-item-inner"><div class="gallery-item-tag">Paisajismo</div><div class="gallery-item-title">Jardín Zen</div></div></div>
+    <div class="gallery-item gi-7"><div class="gallery-item-inner"><div class="gallery-item-tag">Minimalismo</div><div class="gallery-item-title">Casa Sin Color</div></div></div>
+    <div class="gallery-item gi-8"><div class="gallery-item-inner"><div class="gallery-item-tag">Restauración</div><div class="gallery-item-title">Casona 1930</div></div></div>
+    <!-- duplicado para scroll infinito -->
+    <div class="gallery-item gi-1"><div class="gallery-item-inner"><div class="gallery-item-tag">Arquitectura Moderna</div><div class="gallery-item-title">Casa Piedra Blanca</div></div></div>
+    <div class="gallery-item gi-2"><div class="gallery-item-inner"><div class="gallery-item-tag">Diseño Interior</div><div class="gallery-item-title">Estudio Botánico</div></div></div>
+    <div class="gallery-item gi-3"><div class="gallery-item-inner"><div class="gallery-item-tag">En Venta · Santiago</div><div class="gallery-item-title">Penthouse Vista</div></div></div>
+    <div class="gallery-item gi-4"><div class="gallery-item-inner"><div class="gallery-item-tag">Ilustración</div><div class="gallery-item-title">Render Atardecer</div></div></div>
+    <div class="gallery-item gi-5"><div class="gallery-item-inner"><div class="gallery-item-tag">En Arriendo</div><div class="gallery-item-title">Loft Barrio Italia</div></div></div>
+    <div class="gallery-item gi-6"><div class="gallery-item-inner"><div class="gallery-item-tag">Paisajismo</div><div class="gallery-item-title">Jardín Zen</div></div></div>
+    <div class="gallery-item gi-7"><div class="gallery-item-inner"><div class="gallery-item-tag">Minimalismo</div><div class="gallery-item-title">Casa Sin Color</div></div></div>
+    <div class="gallery-item gi-8"><div class="gallery-item-inner"><div class="gallery-item-tag">Restauración</div><div class="gallery-item-title">Casona 1930</div></div></div>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="cta" id="comunidad">
+  <p class="section-eyebrow">Lista de espera</p>
+  <h2>Tu hogar te espera,<br><em>bienvenido a Housy</em></h2>
+  <p class="section-desc">Únete a la comunidad que está cambiando la forma en que el mundo descubre, comparte y vive los espacios que ama. Esto es Housy.</p>
+  <div class="cta-waitlist">
+    <form name="waitlist" netlify id="form-cta">
+        <div class="waitlist-row" id="wrow-cta">
+          <input type="email" name="email" id="email-cta" class="waitlist-input" placeholder="tu@correo.com" required />
+          <button type="submit" class="btn-waitlist">Notifícame</button>
+        </div>
+        <p class="waitlist-success" id="success-cta"></p>
+    </form>
+    <p class="waitlist-note">Sin spam. Solo cuando HOUSY esté listo.</p>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-logo">HOU<span>S</span>Y</div>
+  <nav class="footer-links">
+    <a onclick="showPage('terminos')">Términos</a>
+    <a onclick="showPage('privacidad')">Privacidad</a>
+    <a onclick="showPage('prensa')">Prensa</a>
+    <a onclick="hidePage(); window.scrollTo({top:0,behavior:'smooth'})">Home</a>
+  </nav>
+  <p class="footer-copy">© 2025 HOUSY. Todos los derechos reservados.</p>
+</footer>
+
+<!-- ══ INNER PAGE: TÉRMINOS ══ -->
+<div class="inner-page" id="page-terminos">
+  <div class="inner-topbar">
+    <div class="inner-logo">HOU<span>S</span>Y</div>
+    <button class="inner-back" onclick="hidePage()">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Volver
+    </button>
+  </div>
+  <div class="inner-content">
+    <p class="inner-eyebrow">Legal</p>
+    <h2 class="inner-title">Términos y Condiciones de Uso</h2>
+    <p class="inner-date">Última actualización: 2025</p>
+
+    <p>Bienvenido a HOUSY. Al utilizar nuestro sitio web y servicios, aceptas los siguientes términos:</p>
+
+    <h3>A. Naturaleza de la Plataforma</h3>
+    <p>HOUSY es una red social y vitrina profesional dedicada al mundo de las propiedades, la arquitectura y el diseño. Actuamos como un punto de encuentro entre profesionales (arquitectos, diseñadores, corredores, ilustradores) y entusiastas del hogar.</p>
+
+    <h3>B. Propiedad Intelectual y Licencia de Contenido</h3>
+    <h4>1. Derechos del Autor</h4>
+    <p>Los profesionales mantienen la propiedad intelectual de sus planos, renders, fotografías e ilustraciones.</p>
+    <h4>2. Licencia HOUSY</h4>
+    <p>Al publicar contenido, otorgas a HOUSY una licencia no exclusiva para mostrar y promocionar tu trabajo dentro de nuestra plataforma.</p>
+    <h4>3. Protección de Diseños</h4>
+    <p>Queda estrictamente prohibido el plagio, la descarga no autorizada o el uso comercial de los diseños y renders publicados por otros usuarios sin su consentimiento expreso.</p>
+
+    <h3>C. Responsabilidad Profesional</h3>
+    <h4>Corredores de Propiedades</h4>
+    <p>Al publicar un inmueble, declaras contar con los derechos de comercialización vigentes y ser responsable de la veracidad de los datos técnicos.</p>
+    <h4>Arquitectos y Diseñadores</h4>
+    <p>HOUSY no se hace responsable por la ejecución técnica de los proyectos aquí exhibidos; la relación contractual entre cliente y profesional es externa a la plataforma.</p>
+    <h4>Veracidad</h4>
+    <p>Nos reservamos el derecho de solicitar acreditación profesional a cuentas que se identifiquen como expertos titulados.</p>
+
+    <h3>D. Limitación de Responsabilidad</h3>
+    <p>HOUSY no garantiza la exactitud de las publicaciones de terceros ni es responsable de las transacciones, acuerdos o contratos derivados del contacto en la red social.</p>
+  </div>
+</div>
+
+<!-- ══ INNER PAGE: PRIVACIDAD ══ -->
+<div class="inner-page" id="page-privacidad">
+  <div class="inner-topbar">
+    <div class="inner-logo">HOU<span>S</span>Y</div>
+    <button class="inner-back" onclick="hidePage()">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Volver
+    </button>
+  </div>
+  <div class="inner-content">
+    <p class="inner-eyebrow">Legal</p>
+    <h2 class="inner-title">Política de Privacidad</h2>
+    <p class="inner-date">Última actualización: 2025</p>
+
+    <p>En HOUSY, la privacidad de nuestra comunidad es prioridad. Este documento detalla cómo manejamos tu información.</p>
+
+    <h3>1. Información que Recolectamos</h3>
+    <h4>Datos de Registro</h4>
+    <p>Nombre, correo electrónico, perfil profesional y ubicación (opcional).</p>
+    <h4>Contenido del Usuario</h4>
+    <p>Fotos, renders, descripciones de proyectos y comentarios.</p>
+    <h4>Datos de Navegación</h4>
+    <p>Cookies y metadatos para mejorar la experiencia visual de la plataforma.</p>
+
+    <h3>2. Uso de la Información</h3>
+    <p>Utilizamos tus datos para:</p>
+    <ul>
+      <li>Personalizar tu feed según tus intereses (ej. diseño industrial vs. corretaje).</li>
+      <li>Facilitar que potenciales clientes encuentren tu perfil profesional.</li>
+      <li>Enviar notificaciones sobre interacciones en tus publicaciones.</li>
+    </ul>
+
+    <h3>3. Intercambio de Datos</h3>
+    <p>HOUSY no vende tu información personal a terceros. Tus datos solo son visibles para otros usuarios según la configuración de tu perfil público. En caso de servicios de terceros (como mapas o pasarelas de pago), se aplicarán las políticas de privacidad de dichos proveedores.</p>
+
+    <h3>4. Derechos del Usuario (ARCO)</h3>
+    <p>Tienes derecho a Acceder, Rectificar, Cancelar u Oponerte al uso de tus datos en cualquier momento. Puedes solicitar la eliminación definitiva de tu cuenta y contenido escribiéndonos directamente.</p>
+
+    <h3>5. Seguridad de Imágenes</h3>
+    <p>Implementamos medidas de seguridad para proteger tus archivos visuales, aunque recordamos que el contenido compartido en internet puede ser susceptible de capturas de pantalla por terceros.</p>
+  </div>
+</div>
+
+<!-- ══ INNER PAGE: PRENSA ══ -->
+<div class="inner-page" id="page-prensa">
+  <div class="inner-topbar">
+    <div class="inner-logo">HOU<span>S</span>Y</div>
+    <button class="inner-back" onclick="hidePage()">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Volver
+    </button>
+  </div>
+  <div class="inner-content">
+    <p class="inner-eyebrow">Sala de Prensa</p>
+    <h2 class="inner-title">HOUSY en los medios</h2>
+    <p class="inner-date">Información para periodistas y medios de comunicación</p>
+
+    <h3>Sobre HOUSY</h3>
+    <p>HOUSY es la primera red social especializada en el mundo inmobiliario y del hogar. Una plataforma donde arquitectos, diseñadores de interiores, ilustradores, corredores de propiedades y amantes del hogar se encuentran para inspirar, compartir y descubrir espacios únicos.</p>
+    <p>A diferencia de las redes sociales generalistas, HOUSY está diseñada desde cero para las necesidades específicas de los profesionales del espacio: portafolios visuales, fichas técnicas de propiedades, conexión directa cliente-profesional y tendencias de mercado en tiempo real.</p>
+
+    <h3>Nuestra Misión</h3>
+    <p>Democratizar el acceso a la arquitectura y el diseño de calidad, conectando a quienes crean espacios extraordinarios con quienes los sueñan.</p>
+
+    <h3>Nuestra Visión</h3>
+    <p>Ser la plataforma de referencia en Latinoamérica para todo lo relacionado con el hogar: donde el diseño, la arquitectura y el mercado inmobiliario conviven en un solo lugar intuitivo, visual y humano. Un espacio donde cada casa tiene su historia y cada profesional, su vitrina.</p>
+
+    <hr class="inner-divider">
+
+    <h3>Datos Clave</h3>
+    <div class="press-data-grid">
+      <div class="press-data-item"><div class="label">Fundación</div><div class="value">2025</div></div>
+      <div class="press-data-item"><div class="label">Categoría</div><div class="value">Red social vertical — Inmobiliario y Diseño</div></div>
+      <div class="press-data-item"><div class="label">Plataformas</div><div class="value">iOS, Android y Web</div></div>
+      <div class="press-data-item"><div class="label">Audiencia</div><div class="value">Arquitectos, diseñadores, ilustradores, corredores y entusiastas del hogar</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Email construido por JS para evitar filtros automáticos
+  const _e = ['hausyapp', 'gmail.com'].join('@');
+
+  // Asignar mailto a links de contacto
+  document.getElementById('nav-contact-link').href   = 'mailto:' + _e;
+
+  // ── Mensajes aleatorios
+  const messages = [
+    '🏠 ¡Tu casa en Housy ya tiene dueño — tú!',
+    '🔑 La puerta de Housy está casi abierta para ti.',
+    '✨ Bienvenido al hogar. Housy te espera.',
+    '🏡 Cada casa tiene su historia. La tuya empieza en Housy.',
+    '🪟 Reservaste tu ventana en Housy. ¡Nos vemos pronto!',
+    '🛋️ Tu rincón en Housy está apartado. ¡Gracias!',
+    '🏗️ Estamos construyendo tu Housy. Ya casi está listo.',
+    '🌿 Casa nueva, comunidad nueva. Bienvenido a Housy.',
+    '🔓 Un paso más cerca de encontrar tu casa ideal en Housy.',
+    '🪴 Tu hogar soñado tiene dirección: Housy.'
+  ];
+
+  function randomMsg() {
+    return messages[Math.floor(Math.random() * messages.length)];
+  }
+
+  ['hero','cta'].forEach(id => {
+    const form = document.getElementById('form-' + id);
+    if (!form) return;
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email-' + id).value.trim();
+      if (!email || !email.includes('@') || !email.includes('.')) {
+        document.getElementById('email-' + id).classList.add('error');
+        setTimeout(() => document.getElementById('email-' + id).classList.remove('error'), 1800);
+        return;
+      }
+      // Enviar a Netlify via fetch
+      fetch('/', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: new URLSearchParams(new FormData(form)).toString()
+      }).catch(() => {});
+      // Mostrar mensaje
+      document.getElementById('wrow-' + id).style.display = 'none';
+      const s = document.getElementById('success-' + id);
+      s.textContent = randomMsg();
+      s.style.display = 'block';
+    });
+  });
+
+  // ── Inner pages
+  function showPage(name) {
+    document.getElementById('page-' + name).classList.add('active');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('page-' + name).scrollTop = 0;
+  }
+
+  function hidePage() {
+    document.querySelectorAll('.inner-page').forEach(p => p.classList.remove('active'));
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') hidePage(); });
+</script>
+</body>
+</html>
